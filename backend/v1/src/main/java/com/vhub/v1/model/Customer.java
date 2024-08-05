@@ -1,78 +1,66 @@
 package com.vhub.v1.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import com.vhub.v1.enums.Role;
 
+@Data
+@Builder
 @Entity
-public class Customer
-{
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "qz_customer")
+public class Customer implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String name,email,phone,address,password;
+    private String name, email, phone, address, password;
 
-    public Customer()
-    {}
-    public Customer(int id, String name, String email, String phone, String address, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.password = password;
+    // @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Bookings> bookings;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Token> tokens;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
+    @Override
+    public String getUsername() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public String getPhone() {
-        return phone;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getAddress() {
-        return address;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPassword() 
-    {
-        return password;
-    }
-
-    public void setPassword(String password) 
-    {
-        this.password = password;
-    }
-
 }

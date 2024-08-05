@@ -30,7 +30,7 @@ const Header = () => {
             <FaUserCircle className="user-icon" onClick={() => setShowDropdown(!showDropdown)} />
             <span
               className="user-email"
-              onClick={() => setShowDropdown(!showDropdown)}
+              
             >
               {user.email}
             </span>

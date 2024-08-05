@@ -1,13 +1,17 @@
 package com.vhub.v1.controller;
 
+import com.vhub.v1.dto.CustomerRequestDTO;
+import com.vhub.v1.dto.CustomerResponseDTO;
 import com.vhub.v1.model.*;
 import com.vhub.v1.services.*;
-import java.util.Optional;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/Customers")
@@ -17,8 +21,13 @@ public class CustomerController
     @Autowired
     private CustomerService us;
 
-    
     @PostMapping
+    public ResponseEntity<CustomerResponseDTO> createUser(@RequestBody CustomerRequestDTO userRequestDTO) {
+        CustomerResponseDTO userResponseDTO = us.createUser(userRequestDTO);
+        return ResponseEntity.ok(userResponseDTO);
+    }
+
+    @PostMapping("/new")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer k) 
     {
         return new ResponseEntity<>(us.create(k), HttpStatus.CREATED);
@@ -38,6 +47,13 @@ public class CustomerController
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
+    @GetMapping("/dto")
+    public ResponseEntity<?> getAll() {
+       List<CustomerResponseDTO> customers = us.getAll();
+        return ResponseEntity.ok(customers);
+    }
+    
 
     @GetMapping
     public ResponseEntity<?> getAllCustomer()

@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { TextField, Button, Box, Typography, MenuItem } from '@mui/material';
 
@@ -22,8 +22,14 @@ const services = [
 
 const Book = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  
+  const customerId = useSelector((state) => state.auth.customerId); // Assuming customerId is in your auth state
 
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setFormData((prevData) => ({ ...prevData, customerId }));
+    }
+  }, [isAuthenticated, customerId]);
   const [formData, setFormData] = useState({
     name: '',
     phonenumber: '',
@@ -31,7 +37,7 @@ const Book = () => {
     service: '',
     date: '',
     time: '',
-    problemDesc: '',
+    problemDesc: ''
   });
 
   const handleChange = (e) => {
@@ -76,6 +82,7 @@ const Book = () => {
           date: formData.date,
           time: formData.time,
           problemDesc: formData.problemDesc,
+          customer_id: formData.customer_id,
         });
 
         if (response.status === 200 || response.status === 201) 

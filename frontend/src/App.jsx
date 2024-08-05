@@ -16,6 +16,8 @@ import AdminUsers from './pages/Admin/AdminUsers';
 import NotFound from './pages/NotFound';
 import AdminDashboard from './pages/Admin/AdminDashBoard';
 import CustomizedSnackbars from './components/ui/Snackbar';
+import AdminLayout from './layout/AdminLayout';
+import UserProfile from './pages/UserProfile';
 
 
 function App() {
@@ -48,7 +50,8 @@ function App() {
           <Route path="/service" element={<Services/>} /> 
           <Route path="/book" element={isAuthenticated ? <Book/> : <Navigate to="/login" />} />
          <Route path="/bar" element={<CustomizedSnackbars></CustomizedSnackbars>}/>
-         {/* <Route path='/theme' element={<Theme></Theme>}></Route> */}
+         <Route path='/theme' element={<AdminLayout></AdminLayout>}></Route>
+         <Route path="/profile" element={<UserProfile/>} />
           <Route path='*' element={<NotFound />} />
         </Routes>
         <Footer />

@@ -31,14 +31,11 @@ const Login = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try 
-      {
+      try {
         const response = await axios.get('http://127.0.0.1:8080/Customers');
-        setUsers(response.data); 
+        setUsers(response.data); // Store users in state
         console.log('Users from API:', response.data);
-      } 
-      catch (error)
-      {
+      } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
@@ -64,7 +61,40 @@ const Login = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
-  const handleLogin = async (e) => {
+ /*const handleLogin = async (e) => {
+  e.preventDefault();
+  const newErrors = {
+    email: !validateEmail(formData.email),
+    password: !formData.password,
+  };
+  setErrors(newErrors);
+
+  if (Object.values(newErrors).every(error => !error)) {
+    try {
+      console.log('Users from state:', users);
+      console.log('Admins from state:', admins);
+
+      const user =  users.find(user => user.email === formData.email && user.password === formData.password) : null;
+      const admin =  admins.find(admin => admin.email === formData.email && admin.password === formData.password) : null;
+
+      if (user || admin) {
+        console.log('User found:', user);
+        const isAdmin = admin ? true : false; // Check if admin object exists
+        console.log('Is admin:', isAdmin);
+        dispatch(login({ email: formData.email, isAdmin }));
+        navigate(isAdmin ? '/admin-dashboard' : '/');
+      } else {
+        setErrors({ email: true, password: true });
+        console.log('Username or password is incorrect');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      alert('An error occurred while logging in. Please try again.');
+    }
+  }
+};*/
+
+   const handleLogin = async (e) => {
     e.preventDefault();
     const newErrors = {
       email: !validateEmail(formData.email),
@@ -84,7 +114,7 @@ const Login = () => {
           const isAdmin = admin ? true : false; // Check if admin object exists
           console.log('Is admin:', isAdmin);
           dispatch(login({ email: formData.email, isAdmin }));
-          navigate(isAdmin ? '/admin-dashboard' : '');
+          navigate(isAdmin ? '/admin-dashboard' : '/');
         } else {
           setErrors({ email: true, password: true });
           console.log('Username or password is incorrect');

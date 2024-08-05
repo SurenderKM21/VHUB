@@ -2,6 +2,31 @@
 
 .admin-dashboard {
   font-family: Arial, sans-serif;
+  display: flex;
+}
+
+.side-nav {
+  width: 200px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.side-nav a {
+  display: block;
+  color: #2c3e50;
+  padding: 10px;
+  text-decoration: none;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.side-nav a:hover {
+  background-color: #e9ecef;
+}
+
+.main-content {
+  flex-grow: 1;
   padding: 20px;
 }
 

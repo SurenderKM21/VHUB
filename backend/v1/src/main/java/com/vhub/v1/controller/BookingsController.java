@@ -34,7 +34,7 @@ public class BookingsController
         }
         else
         {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<String>("No Bookings with id",HttpStatus.NOT_FOUND);
         }
     }
 
