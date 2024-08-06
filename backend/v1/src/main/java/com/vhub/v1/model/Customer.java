@@ -22,11 +22,15 @@ public class Customer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    public int getId()
+    {
+        return id;
+    }
 
     private String name, email, phone, address, password;
 
-    // @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<Bookings> bookings;
+    @OneToMany(mappedBy = "customer")
+    private List<Bookings> bookings;
 
     @Enumerated(EnumType.STRING)
     private Role role;

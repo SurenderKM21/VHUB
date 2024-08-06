@@ -35,7 +35,7 @@ public class TechnicianController
         }
         else
         {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<String>("No technician found with given id",HttpStatus.NOT_FOUND);
         }
     }
 

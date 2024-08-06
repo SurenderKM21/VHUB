@@ -1,5 +1,6 @@
 package com.vhub.v1.controller;
 
+import com.vhub.v1.dto.BookingDTO;
 import com.vhub.v1.model.*;
 import com.vhub.v1.services.*;
 import java.util.Optional;
@@ -16,12 +17,17 @@ public class BookingsController
 
     @Autowired
     private BookingsService bs;
-
     @PostMapping
-    public ResponseEntity<Bookings> createBookings(@RequestBody Bookings k) 
-    {
-        return new ResponseEntity<>(bs.create(k), HttpStatus.CREATED);
+    public ResponseEntity<Bookings> createBookings(@RequestBody BookingDTO bookingDTO) {
+        Bookings createdBookings = bs.create(bookingDTO);
+        return new ResponseEntity<>(createdBookings, HttpStatus.CREATED);
     }
+
+    // @PostMapping
+    // public ResponseEntity<Bookings> createBookings(@RequestBody Bookings k) 
+    // {
+    //     return new ResponseEntity<>(bs.create(k), HttpStatus.CREATED);
+    // }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookingsById(@PathVariable("id") int i)
@@ -44,16 +50,23 @@ public class BookingsController
      return new ResponseEntity<>(bs.getAllBookings(),HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Bookings> updateBookings(@PathVariable("id") int id, @RequestBody Bookings u) {
-        Bookings updatedBookings = bs.updateBookings(id, u);
-        if (updatedBookings == null) 
-        {
+    // @PutMapping("/{id}")
+    // public ResponseEntity<Bookings> updateBookings(@PathVariable("id") int id, @RequestBody Bookings u) {
+    //     Bookings updatedBookings = bs.updateBookings(id, u);
+    //     if (updatedBookings == null) 
+    //     {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    //     return new ResponseEntity<>(updatedBookings, HttpStatus.OK);
+    // }
+@PutMapping("/{id}")
+    public ResponseEntity<Bookings> updateBookings(@PathVariable("id") int id, @RequestBody BookingDTO bookingDTO) {
+        Bookings updatedBookings = bs.updateBookings(id, bookingDTO);
+        if (updatedBookings == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(updatedBookings, HttpStatus.OK);
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBookings(@PathVariable("id") int BookingId) 
     {

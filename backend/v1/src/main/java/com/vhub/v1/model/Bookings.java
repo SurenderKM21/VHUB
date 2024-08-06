@@ -1,6 +1,8 @@
 package com.vhub.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
 
@@ -12,11 +14,11 @@ public class Bookings {
     private int bookingId;
 
     private String name, phonenumber, vehicleNo, service, date, time, problemDesc;
-
-    // @ManyToOne
-    // @JoinColumn(name = "customer_id") // Foreign key column
-    // @JsonBackReference
-    // private Customer customer;
+   
+    @ManyToOne
+    @JoinColumn(name = "customer_id") // Foreign key column
+    @JsonBackReference
+    private Customer customer;
 
     public Bookings() {}
 
@@ -97,11 +99,11 @@ public class Bookings {
         this.problemDesc = problemDesc;
     }
 
-    // public Customer getCustomer() {
-    //     return customer;
-    // }
+    public Customer getCustomer() {
+        return customer;
+    }
 
-    // public void setCustomer(Customer customer) {
-    //     this.customer = customer;
-    // }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

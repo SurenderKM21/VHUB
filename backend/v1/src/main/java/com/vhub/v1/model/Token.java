@@ -1,5 +1,6 @@
 package com.vhub.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vhub.v1.enums.TokenType;
 
 import jakarta.persistence.*;
@@ -26,5 +27,6 @@ public class Token {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
+    @JsonBackReference
     private Customer customer; // Change 'user' to 'customer'
 }

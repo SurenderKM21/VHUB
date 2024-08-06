@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,11 +28,11 @@ public class CustomerController
         return ResponseEntity.ok(userResponseDTO);
     }
 
-    @PostMapping("/new")
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer k) 
-    {
-        return new ResponseEntity<>(us.create(k), HttpStatus.CREATED);
-    }
+    // @PostMapping("/new")
+    // public ResponseEntity<Customer> createCustomer(@RequestBody Customer k) 
+    // {
+    //     return new ResponseEntity<>(us.create(k), HttpStatus.CREATED);
+    // }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable("id") int i)
@@ -44,7 +45,7 @@ public class CustomerController
         }
         else
         {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<String>("Customer Not found",HttpStatus.NOT_FOUND);
         }
     }
 
@@ -70,8 +71,8 @@ public class CustomerController
         }
         return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
     }
-
     @DeleteMapping("/{id}")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteCustomer(@PathVariable("id") int id) 
     {
         boolean deleted = us.deleteCustomer(id);
