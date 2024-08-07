@@ -20,19 +20,32 @@ public enum Role {
                         Access.TECH_GET,
                         Access.TECH_POST,
                         Access.TECH_PUT,
-                        Access.TECH_DELETE)),
+                        Access.TECH_DELETE,
+                        Access.BOOK_DELETE,
+                        Access.BOOK_GET,
+                        Access.BOOK_PUT
+                        )),
         Technician(Set.of(
                         Access.TECH_GET,
                         Access.TECH_POST,
                         Access.TECH_PUT,
                         Access.TECH_DELETE,
-                        Access.USER_GET)),
+                        Access.USER_GET
+                        ,Access.BOOK_GET,
+                        Access.BOOK_DELETE,
+                        Access.BOOK_PUT
+                        )),
         User(Set.of(
                         Access.USER_GET,
                         Access.USER_POST,
                         Access.USER_PUT,
                         Access.USER_DELETE,
-                        Access.TECH_GET)),;
+                        Access.TECH_GET,
+                        Access.BOOK_DELETE,
+                        Access.BOOK_GET,
+                        Access.BOOK_POST,
+                        Access.BOOK_PUT
+                        )),;
 
         @Getter
         private final Set<Access> accesses;

@@ -1,5 +1,6 @@
 package com.vhub.v1.controller;
 
+import com.vhub.v1.dto.CustomerDTO;
 import com.vhub.v1.dto.CustomerRequestDTO;
 import com.vhub.v1.dto.CustomerResponseDTO;
 import com.vhub.v1.model.*;
@@ -66,19 +67,30 @@ public class CustomerController
      return new ResponseEntity<>(us.getAllCustomer(),HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int id, @RequestBody Customer u) {
-        Customer updatedCustomer = us.updateCustomer(id, u);
-        if (updatedCustomer == null) 
-        {
+     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('Admin') or hasRole('User')")
+    public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int id, @RequestBody CustomerDTO customerDTO) {
+        Customer updatedCustomer = us.updateCustomer(id, customerDTO);
+        if (updatedCustomer == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
         }
-        else
-        return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
     }
-    @DeleteMapping("/{id}")
+    // @PutMapping("/{id}")
+    // @PreAuthorize("hasRole('Admin') or hasRole('User')")
+    // public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int id, @RequestBody Customer u) {
+    //     Customer updatedCustomer = us.updateCustomer(id, u);
+    //     if (updatedCustomer == null) 
+    //     {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    //     else
+    //     return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
+    // }
 
-@PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('Admin')  or hasRole('User')")
     public ResponseEntity<String> deleteCustomer(@PathVariable("id") int id) 
     {
         boolean deleted = us.deleteCustomer(id);

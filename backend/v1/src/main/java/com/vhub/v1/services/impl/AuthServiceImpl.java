@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .phone(registerRequest.getPhone())
                 .address(registerRequest.getAddress())
-                .role(Role.User)
+                .role(registerRequest.getRole())
                 .build();
         userRepository.save(user);
         return "Customer registered successfully.";

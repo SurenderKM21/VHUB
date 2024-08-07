@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +25,7 @@ public class BookingsController
     private BookingsService bs;
 
     @PostMapping
+    @PreAuthorize("hasRole('User')")
     public ResponseEntity<Bookings> createBookings(@RequestBody BookingDTO bookingDTO) {
         Bookings createdBookings = bs.create(bookingDTO);
         return new ResponseEntity<>(createdBookings, HttpStatus.CREATED);
@@ -65,7 +67,7 @@ public class BookingsController
     //     }
     //     return new ResponseEntity<>(updatedBookings, HttpStatus.OK);
     // }
-@PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Bookings> updateBookings(@PathVariable("id") int id, @RequestBody BookingDTO bookingDTO) {
         Bookings updatedBookings = bs.updateBookings(id, bookingDTO);
         if (updatedBookings == null) {
@@ -73,6 +75,7 @@ public class BookingsController
         }
         return new ResponseEntity<>(updatedBookings, HttpStatus.OK);
     }
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBookings(@PathVariable("id") int BookingId) 
     {

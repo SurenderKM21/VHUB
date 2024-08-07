@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +25,7 @@ public class TechnicianController
 
     
     @PostMapping
+    @PreAuthorize("hasRole('Admin') or hasRole('Technician')")
     public ResponseEntity<Technician> createTechnician(@RequestBody Technician k) 
     {
         return new ResponseEntity<>(ts.create(k), HttpStatus.CREATED);
@@ -51,6 +53,7 @@ public class TechnicianController
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('Admin') or hasRole('Technician')")
     public ResponseEntity<Technician> updateTechnician(@PathVariable("id") int id, @RequestBody Technician u) {
         Technician updatedTechnician = ts.updateTechnician(id, u);
         if (updatedTechnician == null) 
@@ -61,6 +64,7 @@ public class TechnicianController
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('Admin') or hasRole('Technician')")
     public ResponseEntity<String> deleteTechnician(@PathVariable("id") int id) 
     {
         boolean deleted = ts.deleteTechnician(id);

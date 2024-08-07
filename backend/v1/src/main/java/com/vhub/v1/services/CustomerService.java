@@ -1,6 +1,7 @@
 package com.vhub.v1.services;
 
 import com.vhub.v1.repository.*;
+import com.vhub.v1.dto.CustomerDTO;
 import com.vhub.v1.dto.CustomerRequestDTO;
 import com.vhub.v1.dto.CustomerResponseDTO;
 import com.vhub.v1.model.*;
@@ -56,14 +57,29 @@ public class CustomerService {
         return ur.findById(id);
     }
 
-    public Customer updateCustomer(int id, Customer u)
-    {
-        if (ur.existsById(id)) 
-        {
-            u.setId(id);
-            return ur.save(u);
+    // public Customer updateCustomer(int id, Customer u)
+    // {
+    //     if (ur.existsById(id)) 
+    //     {
+    //         u.setId(id);
+    //         return ur.save(u);
+    //     }
+    //     return null;
+    // }
+
+     public Customer updateCustomer(int id, CustomerDTO customerDTO) {
+      
+        Customer existingCustomer = ur.findById(id).orElse(null);
+        if (existingCustomer == null) {
+            return null; 
         }
-        return null;
+
+        if (customerDTO.getName() != null) existingCustomer.setName(customerDTO.getName());
+        if (customerDTO.getEmail() != null) existingCustomer.setEmail(customerDTO.getEmail());
+        if (customerDTO.getPhone() != null) existingCustomer.setPhone(customerDTO.getPhone());
+        if (customerDTO.getAddress() != null) existingCustomer.setAddress(customerDTO.getAddress());
+       
+        return ur.save(existingCustomer);
     }
 
     public boolean deleteCustomer(int id) {

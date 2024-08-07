@@ -16,7 +16,11 @@ public enum Access {
     TECH_GET("tech:read"),
     TECH_POST("tech:create"),
     TECH_PUT("tech:edit"),
-    TECH_DELETE("tech:delete");
+    TECH_DELETE("tech:delete"),
+    BOOK_DELETE("book:delete"),
+    BOOK_GET("book:get"),
+    BOOK_POST("book:post"),
+    BOOK_PUT("book:put");
 
     @Getter
     private final String access;
