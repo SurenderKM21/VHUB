@@ -2,6 +2,9 @@ package com.vhub.v1.controller;
 
 import com.vhub.v1.model.*;
 import com.vhub.v1.services.*;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Technicians")
+
+@Tag(name = "Technicians", description = "Endpoints for CRUD for Technicians")
 public class TechnicianController
 {
 

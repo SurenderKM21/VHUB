@@ -39,6 +39,9 @@ public class AuthServiceImpl implements AuthService {
         if (userExist.isPresent()) {
             return "User already exists with email id " + registerRequest.getEmail();
         }
+
+        
+
         var user = Customer.builder()
                 .name(registerRequest.getName())
                 .email(registerRequest.getEmail())
@@ -48,24 +51,34 @@ public class AuthServiceImpl implements AuthService {
                 .role(Role.User)
                 .build();
         userRepository.save(user);
-        return "User registered successfully.";
+        return "Customer registered successfully.";
     }
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid username or password");
+        }
+
+        var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", user.getRole().toString());
         var accessToken = jwtUtil.generateToken(extraClaims, user);
         revokeAllUserTokens(user);
-        saveUserToken(user, accessToken); // Cast to String
-        return LoginResponse.builder().accessToken(accessToken).build(); // Cast to String
+        saveUserToken(user, accessToken);
+        return LoginResponse.builder().accessToken(accessToken).build();
     }
 
     private void saveUserToken(Customer user, String accessToken) {
-        var token = Token.builder().customer(user).token(accessToken).expired(false).revoked(false).build();
+        var token = Token.builder()
+                .customer(user)
+                .token(accessToken)
+                .expired(false)
+                .revoked(false)
+                .build();
         tokenRepository.save(token);
     }
 
@@ -84,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
     public String createAdmin() {
         Optional<Customer> userExist = userRepository.findByEmail("admin@gmail.com");
         if (userExist.isPresent()) {
-            return "User already exists with email id - admin@gmail.com";
+            return "Admin already exists with email id - admin@gmail.com";
         }
 
         var user = Customer.builder()

@@ -66,13 +66,12 @@ public class CustomerService {
         return null;
     }
 
-    public boolean deleteCustomer(int id) 
-    {
-        if (ur.existsById(id))
-        {
+    public boolean deleteCustomer(int id) {
+        if (ur.existsById(id)) {
             ur.deleteById(id);
             return true;
         }
         return false;
     }
+    
 }

@@ -1,4 +1,7 @@
 package com.vhub.v1.dto.request;
+
+import com.vhub.v1.enums.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,4 +15,6 @@ public class RegisterRequest {
     private String password;
     private String phone;
     private String address;
+    private Role role;
+    
 }

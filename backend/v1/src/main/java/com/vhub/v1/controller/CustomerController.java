@@ -5,6 +5,8 @@ import com.vhub.v1.dto.CustomerResponseDTO;
 import com.vhub.v1.model.*;
 import com.vhub.v1.services.*;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +18,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Customers")
+
+@Tag(name = "Customers", description = "Endpoints for CRUD for Customer")
 public class CustomerController
 {
 
     @Autowired
     private CustomerService us;
 
-    @PostMapping
-    public ResponseEntity<CustomerResponseDTO> createUser(@RequestBody CustomerRequestDTO userRequestDTO) {
-        CustomerResponseDTO userResponseDTO = us.createUser(userRequestDTO);
-        return ResponseEntity.ok(userResponseDTO);
-    }
+    // @PostMapping
+    // public ResponseEntity<CustomerResponseDTO> createUser(@RequestBody CustomerRequestDTO userRequestDTO) {
+    //     CustomerResponseDTO userResponseDTO = us.createUser(userRequestDTO);
+    //     return ResponseEntity.ok(userResponseDTO);
+    // }
 
     // @PostMapping("/new")
     // public ResponseEntity<Customer> createCustomer(@RequestBody Customer k) 
@@ -69,10 +73,12 @@ public class CustomerController
         {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        else
         return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    // @PreAuthorize("hasRole('ADMIN')")
+
+@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteCustomer(@PathVariable("id") int id) 
     {
         boolean deleted = us.deleteCustomer(id);
@@ -80,6 +86,7 @@ public class CustomerController
         {
             return new ResponseEntity<>("Customer not found with ID: " + id, HttpStatus.NOT_FOUND);
         }
+        else
         return new ResponseEntity<>("Customer deleted successfully", HttpStatus.OK);
     }
 }

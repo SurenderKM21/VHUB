@@ -16,12 +16,23 @@ public enum Role {
                         Access.USER_GET,
                         Access.USER_POST,
                         Access.USER_PUT,
-                        Access.USER_DELETE)),
+                        Access.USER_DELETE,
+                        Access.TECH_GET,
+                        Access.TECH_POST,
+                        Access.TECH_PUT,
+                        Access.TECH_DELETE)),
+        Technician(Set.of(
+                        Access.TECH_GET,
+                        Access.TECH_POST,
+                        Access.TECH_PUT,
+                        Access.TECH_DELETE,
+                        Access.USER_GET)),
         User(Set.of(
                         Access.USER_GET,
                         Access.USER_POST,
                         Access.USER_PUT,
-                        Access.USER_DELETE));
+                        Access.USER_DELETE,
+                        Access.TECH_GET)),;
 
         @Getter
         private final Set<Access> accesses;

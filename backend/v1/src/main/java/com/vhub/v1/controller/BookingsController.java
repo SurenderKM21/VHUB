@@ -3,6 +3,9 @@ package com.vhub.v1.controller;
 import com.vhub.v1.dto.BookingDTO;
 import com.vhub.v1.model.*;
 import com.vhub.v1.services.*;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Bookings")
+
+@Tag(name = "Bookings", description = "Endpoints for CRUD - Bookings")
 public class BookingsController
 {
 
     @Autowired
     private BookingsService bs;
+
     @PostMapping
     public ResponseEntity<Bookings> createBookings(@RequestBody BookingDTO bookingDTO) {
         Bookings createdBookings = bs.create(bookingDTO);

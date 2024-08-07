@@ -52,10 +52,12 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
                 return httpSecurity
                                 .csrf(AbstractHttpConfigurer::disable)
+                                
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .authorizeHttpRequests(
                                                 authorize -> authorize.requestMatchers(PublicEndPoints).permitAll().anyRequest().authenticated())
-                                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                                
+                                                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                                 .authenticationProvider(authenticationProvider)
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .logout(logout -> logout.logoutUrl("/api/auth/logout")

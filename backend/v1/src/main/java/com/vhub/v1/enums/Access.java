@@ -12,7 +12,11 @@ public enum Access {
     USER_GET("user:read"),
     USER_POST("user:create"),
     USER_PUT("user:edit"),
-    USER_DELETE("user:delete");
+    USER_DELETE("user:delete"),
+    TECH_GET("tech:read"),
+    TECH_POST("tech:create"),
+    TECH_PUT("tech:edit"),
+    TECH_DELETE("tech:delete");
 
     @Getter
     private final String access;

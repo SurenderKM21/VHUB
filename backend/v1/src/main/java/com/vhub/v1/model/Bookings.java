@@ -20,6 +20,11 @@ public class Bookings {
     @JsonBackReference
     private Customer customer;
 
+    // @ManyToOne
+    // @JoinColumn(name = "technician_id") // Foreign key column
+    // @JsonBackReference
+    // private Technician technician;
+
     public Bookings() {}
 
     public Bookings(int bookingId, String name, String phonenumber, String vehicleNo, String service, String date,

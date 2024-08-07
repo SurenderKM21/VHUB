@@ -1,17 +1,26 @@
 package com.vhub.v1.model;
 
 import java.sql.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Technician {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int tech_id;
+
+    //  @OneToMany(mappedBy = "technician", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonManagedReference
+    // private List<Bookings> bookings;
 
     String name,address,phone,gender,expert,email,password;
     public Technician(int tech_id, String name, String address, String phone, String gender, String expert,
