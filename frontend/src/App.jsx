@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 // import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Register from './pages/Register';
+// import Register from './pages/Register';
 import Footer from './components/Footer';
 // import AdminDashboard from './pages/Admin/AdminDashBoard';
 import About from './pages/About';
@@ -18,6 +18,7 @@ import AdminDashboard from './pages/Admin/AdminDashBoard';
 import CustomizedSnackbars from './components/ui/Snackbar';
 import AdminLayout from './layout/AdminLayout';
 import UserProfile from './pages/UserProfile';
+import Register2 from './pages/Register2';
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
           <Route path='/logina' element={<Login/>}></Route>
           <Route
             path="/register"
-            element={isAuthenticated ? <Navigate to="/" /> : <Register />}
+            element={isAuthenticated ? <Navigate to="/" /> : <Register2 />}
           />
           {/* <Route element={ isAdmin ? <AdminLayout />:<Navigate to="/login" /> }> */}
                         <Route path='/admin/dashboard' element={<AdminDashboard2 />} />

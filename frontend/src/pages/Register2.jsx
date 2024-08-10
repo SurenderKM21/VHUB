@@ -4,7 +4,7 @@ import FilledInput from '@mui/material/FilledInput';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
-import FormHelperText from '@mui/material/FormHelperText';
+// import FormHelperText from '@mui/material/FormHelperText';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,7 +15,7 @@ import './Register.css';
 import toast from 'react-hot-toast';
 import { SignUp } from '../services/api';
 
-const Register = () => {
+const Register2 = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -27,43 +27,25 @@ const Register = () => {
     termsAccepted: false,
   });
 
-  const [errors, setErrors] = useState({
-    name: false,
-    email: false,
-    phone: false,
-    address: false,
-    password: false,
-    confirmPassword: false,
-    termsAccepted: false,
-  });
+ 
+//   const validateEmail = (email) => {
+//     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     return emailPattern.test(email);
+//   };
 
-  const validateEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  };
+//   const validatePhone = (phone) => {
+//     const phonePattern = /^\d{10}$/;
+//     return phonePattern.test(phone);
+//   };
 
-  const validatePhone = (phone) => {
-    const phonePattern = /^\d{10}$/;
-    return phonePattern.test(phone);
-  };
-
-  const validatePassword = (password) => {
-    return password.length >= 8;
-  };
+//   const validatePassword = (password) => {
+//     return password.length >= 8;
+//   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    const newErrors = {
-      name: !formData.name,
-      email: !validateEmail(formData.email),
-      phone: !validatePhone(formData.phone),
-      address: !formData.address,
-      password: !validatePassword(formData.password),
-      confirmPassword: !formData.confirmPassword || formData.password !== formData.confirmPassword,
-      termsAccepted: !formData.termsAccepted,
-    };
-    setErrors(newErrors);
-    console.log(formData);
+    
+    console.log("DATA",formData);
     const res = await SignUp(formData.name, formData.email, formData.phone, formData.address, formData.password);
 
     if (res.data==="User registered successfully.") {
@@ -77,27 +59,7 @@ const Register = () => {
         toast.error(res.data)
         // console.log(res.data)
     }
-    // if (Object.values(newErrors).every(error => !error)) {
-    //   try {
-    //     const response = await axios.post('http://127.0.0.1:8080/Customers', {
-    //       name: formData.name,
-    //       email: formData.email,
-    //       phone: formData.phone,
-    //       address: formData.address,
-    //       password: formData.password,
-    //     });
-
-    //     if (response.status === 201) {
-    //       console.log('Form Submitted', formData);
-    //       navigate('/login');
-    //     } else {
-    //       console.log('Unexpected response status:', response.data);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error registering customer:', error);
-    //     alert('An error occurred while registering. Please try again.');
-    //   }
-    // }
+    
   };
 
   const handleChange = (e) => {
@@ -123,7 +85,7 @@ const Register = () => {
           </Typography>
           <Box className="form-row">
             <Box className="form-column">
-              <FormControl variant="filled" error={errors.name}>
+              <FormControl variant="filled">
                 <InputLabel htmlFor="component-filled-name">Name</InputLabel>
                 <FilledInput
                   id="component-filled-name"
@@ -131,9 +93,8 @@ const Register = () => {
                   value={formData.name}
                   onChange={handleChange}
                 />
-                {errors.name && <FormHelperText>Name is required</FormHelperText>}
-              </FormControl>
-              <FormControl variant="filled" error={errors.email}>
+               </FormControl>
+              <FormControl variant="filled" >
                 <InputLabel htmlFor="component-filled-email">Email</InputLabel>
                 <FilledInput
                   id="component-filled-email"
@@ -141,9 +102,8 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
-                {errors.email && <FormHelperText>Valid email is required</FormHelperText>}
-              </FormControl>
-              <FormControl variant="filled" error={errors.phone}>
+               </FormControl>
+              <FormControl variant="filled">
                 <InputLabel htmlFor="component-filled-phone">Phone Number</InputLabel>
                 <FilledInput
                   id="component-filled-phone"
@@ -151,11 +111,10 @@ const Register = () => {
                   value={formData.phone}
                   onChange={handleChange}
                 />
-                {errors.phone && <FormHelperText>Phone number must be 10 digits</FormHelperText>}
-              </FormControl>
+               </FormControl>
             </Box>
             <Box className="form-column">
-              <FormControl variant="filled" error={errors.address}>
+              <FormControl variant="filled" >
                 <InputLabel htmlFor="component-filled-address">Address</InputLabel>
                 <FilledInput
                   id="component-filled-address"
@@ -163,9 +122,8 @@ const Register = () => {
                   value={formData.address}
                   onChange={handleChange}
                 />
-                {errors.address && <FormHelperText>Address is required</FormHelperText>}
-              </FormControl>
-              <FormControl variant="filled" error={errors.password}>
+               </FormControl>
+              <FormControl variant="filled"  >
                 <InputLabel htmlFor="component-filled-password">Password</InputLabel>
                 <FilledInput
                   id="component-filled-password"
@@ -174,9 +132,8 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                 />
-                {errors.password && <FormHelperText>Password must be at least 8 characters long</FormHelperText>}
-              </FormControl>
-              <FormControl variant="filled" error={errors.confirmPassword}>
+                 </FormControl>
+              <FormControl variant="filled"  >
                 <InputLabel htmlFor="component-filled-confirm-password">Confirm Password</InputLabel>
                 <FilledInput
                   id="component-filled-confirm-password"
@@ -185,8 +142,7 @@ const Register = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                 />
-                {errors.confirmPassword && <FormHelperText>Passwords do not match</FormHelperText>}
-              </FormControl>
+               </FormControl>
             </Box>
           </Box>
           <FormControlLabel
@@ -200,7 +156,6 @@ const Register = () => {
             }
             label="I agree to the terms and conditions"
           />
-          {errors.termsAccepted && <FormHelperText error>Terms and conditions must be accepted</FormHelperText>}
           <Button type="submit" variant="contained" color="primary" className="submit-button">
             Sign Up
           </Button>
@@ -213,4 +168,4 @@ const Register = () => {
   );
 }
 
-export default Register;
+export default Register2;
