@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.vhub.v1.config.JwtService;
 import com.vhub.v1.dto.request.LoginRequest;
 import com.vhub.v1.dto.request.RegisterRequest;
 import com.vhub.v1.dto.response.LoginResponse;
@@ -25,51 +26,69 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+
+@SuppressWarnings("null")
 public class AuthServiceImpl implements AuthService {
 
     private final CustomerRepo userRepository;
     private final JwtRepo tokenRepository;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtToken jwtUtil;
 
-    @Override
-    public String register(RegisterRequest registerRequest) {
-        Optional<Customer> userExist = userRepository.findByEmail(registerRequest.getEmail());
-        if (userExist.isPresent()) {
-            return "User already exists with email id " + registerRequest.getEmail();
-        }
 
-        
+    public AuthenticationResponse register(RegisterRequest request) {
+        Optional<Customer> existingUser = userRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("Email already registered");
+        }
 
         var user = Customer.builder()
-                .name(registerRequest.getName())
-                .email(registerRequest.getEmail())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .phone(registerRequest.getPhone())
-                .address(registerRequest.getAddress())
-                .role(registerRequest.getRole())
+                .name(request.getName())
+                .email(request.getEmail())
+                .phone(request.getPhone()).address(request.getAddress())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
                 .build();
         userRepository.save(user);
-        return "Customer registered successfully.";
+
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .role(user.getRole())
+                .build();
     }
 
-    @Override
-    public LoginResponse login(LoginRequest loginRequest) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        } catch (Exception e) {
-            throw new RuntimeException("Invalid username or password");
-        }
+    // public LoginResponse login(LoginRequest loginRequest) {
+        
+    //         authenticationManager.authenticate(
+    //                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        
 
-        var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role", user.getRole().toString());
-        var accessToken = jwtUtil.generateToken(extraClaims, user);
+    //     var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
+    //     Map<String, Object> extraClaims = new HashMap<>();
+    //     extraClaims.put("role", user.getRole().toString());
+    //     var accessToken = jwtUtil.generateToken(extraClaims, user);
+    //     revokeAllUserTokens(user);
+    //     saveUserToken(user, accessToken);
+    //     return LoginResponse.builder().accessToken(accessToken).build();
+    // }
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user, accessToken);
-        return LoginResponse.builder().accessToken(accessToken).build();
+        saveUserToken(user, jwtToken);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .role(user.getRole())
+                .build();
     }
 
     private void saveUserToken(Customer user, String accessToken) {
@@ -83,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void revokeAllUserTokens(Customer user) {
-        List<Token> validUserTokens = tokenRepository.findAllByCustomer_IdAndExpiredFalseAndRevokedFalse(user.getId());
+        var validUserTokens = tokenRepository.findAllByCustomer_IdAndExpiredFalseAndRevokedFalse(user.getId());
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(token -> {

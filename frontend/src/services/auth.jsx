@@ -8,9 +8,9 @@ const getToken = () => {
     if (token) {
         return token;
     }
-    return null;
+    return "No token";
 }
-
+const setUser=(user)=>localStorage.setItem('username',user);
 
 const getUserEmail = () => {
     const token = getToken();
@@ -38,10 +38,11 @@ const isLoggedIn = () => {
         return isLogin;
 
     }
+    return false;
 }
 
 const SignIn = (email, password) => axiosInstance.post("/auth/login", { email, password });
 const SignOut = () => localStorage.clear()
 
 
-export const authService = { getToken, setToken, getUserEmail, getUserRole, isLoggedIn, SignIn, SignOut };
+export const authService = { getToken, setToken,setUser, getUserEmail, getUserRole, isLoggedIn, SignIn, SignOut };

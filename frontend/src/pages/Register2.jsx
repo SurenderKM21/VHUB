@@ -12,8 +12,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useNavigate } from 'react-router-dom';
 
 import './Register.css';
-import toast from 'react-hot-toast';
-import { SignUp } from '../services/api';
+
+import { ToastContainer, toast } from 'react-toastify';
+// import { SignUp } from '../services/api';
+import axios from 'axios';
 
 const Register2 = () => {
   const navigate = useNavigate();
@@ -41,19 +43,27 @@ const Register2 = () => {
 //   const validatePassword = (password) => {
 //     return password.length >= 8;
 //   };
+const data = {
+  name:formData.name,
+  email:formData.email,
+  password:formData.password,
+  phone:formData.phone,
+  address:formData.address,
+  role: 'User' 
+};
 
   const handleSignup = async (e) => {
     e.preventDefault();
     
     console.log("DATA",formData);
-    const res = await SignUp(formData.name, formData.email, formData.phone, formData.address, formData.password);
-
+    const res = await axios.post('http://localhost:8083/api/auth/register',data);
+    
     if (res.data==="User registered successfully.") {
 
         toast.success("Signup Success")
         setTimeout(() => {
             navigate('/login')
-        }, 5000)
+        }, 1000)
     }
     else {
         toast.error(res.data)
@@ -164,6 +174,7 @@ const Register2 = () => {
           </Typography>
         </Box>
       </Box>
+      <ToastContainer></ToastContainer>
     </div>
   );
 }

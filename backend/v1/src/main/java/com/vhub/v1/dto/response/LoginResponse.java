@@ -1,5 +1,7 @@
 package com.vhub.v1.dto.response;
 
+import javax.management.relation.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +10,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LoginResponse {
-    @Builder.Default
-    private String accessToken = "";
+    private String token;
+    private Role role;
 }

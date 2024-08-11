@@ -23,7 +23,7 @@ import Register2 from './pages/Register2';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const isAdmin = true;
 
   return (
     <div>
